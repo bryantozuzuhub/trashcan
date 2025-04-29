@@ -78,3 +78,16 @@ class TradingBotGUI:
 
         self.running = True
         self.auto_update_thread = threading.Thread(target=self.auto_update)
+
+
+        #due to the nature of the mock API, we will not be using the auto update thread
+        self.auto_update_thread.start()
+    def load_equities(self):
+        try:
+            with open(DATA_FILE, "r") as file:
+                return json.load(file)
+        except FileNotFoundError:
+            return {}
+        except json.JSONDecodeError:
+            messagebox.showerror("Error", "Failed to load equities data. The file may be corrupted.")
+            return {}
